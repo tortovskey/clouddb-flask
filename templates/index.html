@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CloudDB</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=20260510-buttons">
+  </head>
+  <body>
+    <svg class="svg-sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <symbol id="icon-dashboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="8" rx="1"/><rect x="14" y="4" width="6" height="16" rx="1"/><rect x="4" y="16" width="6" height="4" rx="1"/></symbol>
+      <symbol id="icon-database" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></symbol>
+      <symbol id="icon-schema" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="5" rx="1"/><rect x="4" y="14" width="7" height="5" rx="1"/><rect x="15" y="14" width="5" height="5" rx="1"/><path d="M8 10v4M18 10v4"/></symbol>
+      <symbol id="icon-records" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></symbol>
+      <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m20 20-4.2-4.2"/><circle cx="11" cy="11" r="6"/></symbol>
+      <symbol id="icon-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6v5h-5"/><path d="M4 18v-5h5"/><path d="M18 10a6 6 0 0 0-10.5-3.2L4 10"/><path d="M6 14a6 6 0 0 0 10.5 3.2L20 14"/></symbol>
+      <symbol id="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="icon-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l11-11-4-4L4 16v4Z"/><path d="m13 7 4 4"/></symbol>
+      <symbol id="icon-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 14h10l1-14"/><path d="M9 7V4h6v3"/></symbol>
+      <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></symbol>
+      <symbol id="icon-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V9"/><path d="m7 14 5-5 5 5"/><path d="M5 4h14"/></symbol>
+      <symbol id="icon-backup" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7c0-1.7 2.7-3 6-3s6 1.3 6 3-2.7 3-6 3-6-1.3-6-3Z"/><path d="M6 7v5c0 1.7 2.7 3 6 3s6-1.3 6-3V7"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/><path d="M12 12v6M9.5 15.5 12 18l2.5-2.5"/></symbol>
+      <symbol id="icon-restore" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.3-5.7L4 8.6"/><path d="M4 4v4.6h4.6"/><path d="M12 8v5l3 2"/></symbol>
+      <symbol id="icon-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.4 2.5 3.5 5.5 3.5 9S14.4 18.5 12 21c-2.4-2.5-3.5-5.5-3.5-9S9.6 5.5 12 3Z"/></symbol>
+      <symbol id="icon-function" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8l4 4v12H4V4h4Z"/><path d="M14 4v5h5"/><path d="M8 15c1.8-4 6.2-4 8 0"/><path d="M9 17h6"/></symbol>
+      <symbol id="icon-activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h4l2-6 4 12 2-6h4"/></symbol>
+      <symbol id="icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.5 2.9 8.4 7 10 4.1-1.6 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-5"/></symbol>
+      <symbol id="icon-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
+      <symbol id="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10V8a5 5 0 0 1 10 0v2"/><rect x="5" y="10" width="14" height="10" rx="2"/></symbol>
+      <symbol id="icon-login" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M14 4h6v16h-6"/></symbol>
+      <symbol id="icon-user-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 20a6 6 0 0 0-12 0"/><circle cx="9" cy="8" r="4"/><path d="M18 8v6M15 11h6"/></symbol>
+      <symbol id="icon-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 8V4H4v16h10v-4"/><path d="M10 12h10"/><path d="m17 9 3 3-3 3"/></symbol>
+    </svg>
+
+    <div id="message" class="toast-message" role="status" aria-live="polite"></div>
+
+    <section id="authBox" class="auth-screen">
+      <div class="auth-shell">
+        <aside class="auth-copy">
+          <div class="auth-brand">
+            <span class="logo-mark">C</span>
+            <strong>CloudDB</strong>
+          </div>
+          <p class="eyebrow">Serverless data platform</p>
+          <h1>Единая консоль для баз, схем и записей.</h1>
+          <p>Вход и регистрация сделаны как спокойный focused-flow, а рабочее пространство построено в стиле облачной панели управления.</p>
+          <div class="auth-proof">
+            <span><svg class="icon"><use href="#icon-shield"></use></svg> Изолированные рабочие пространства</span>
+            <span><svg class="icon"><use href="#icon-activity"></use></svg> Аудит действий</span>
+            <span><svg class="icon"><use href="#icon-globe"></use></svg> Готовность к масштабированию</span>
+          </div>
+        </aside>
+
+        <div class="auth-card">
+          <div class="auth-card-head">
+            <span class="logo-mark">C</span>
+            <div>
+              <h2 id="authTitle">Войдите в CloudDB</h2>
+              <p id="authSubtitle">Продолжите работу с вашими базами данных.</p>
+            </div>
+          </div>
+
+          <div class="auth-switch" role="tablist" aria-label="Режим доступа">
+            <button id="loginTab" class="active" type="button" data-auth-mode="login">
+              <svg class="icon"><use href="#icon-login"></use></svg>
+              Вход
+            </button>
+            <button id="registerTab" type="button" data-auth-mode="register">
+              <svg class="icon"><use href="#icon-user-plus"></use></svg>
+              Регистрация
+            </button>
+          </div>
+
+          <form id="loginForm" class="auth-form">
+            <label>Email</label>
+            <div class="input-with-icon">
+              <svg class="icon"><use href="#icon-mail"></use></svg>
+              <input name="email" type="email" placeholder="name@example.com" autocomplete="email" required>
+            </div>
+            <label>Пароль</label>
+            <div class="input-with-icon">
+              <svg class="icon"><use href="#icon-lock"></use></svg>
+              <input name="password" type="password" placeholder="Ваш пароль" autocomplete="current-password" required>
+            </div>
+            <button class="full-button" type="submit">Продолжить</button>
+          </form>
+
+          <form id="registerForm" class="auth-form hide">
+            <label>Email</label>
+            <div class="input-with-icon">
+              <svg class="icon"><use href="#icon-mail"></use></svg>
+              <input name="email" type="email" placeholder="name@example.com" autocomplete="email" required>
+            </div>
+            <label>Пароль</label>
+            <div class="input-with-icon">
+              <svg class="icon"><use href="#icon-lock"></use></svg>
+              <input name="password" type="password" placeholder="Минимум 4 символа" autocomplete="new-password" required>
+            </div>
+            <button class="full-button" type="submit">Создать аккаунт</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <div id="appBox" class="console-shell hide">
+      <aside class="console-sidebar">
+        <div class="sidebar-brand">
+          <span class="logo-mark">C</span>
+          <div>
+            <strong>CloudDB</strong>
+            <small>Serverless Data Console</small>
+          </div>
+        </div>
+
+        <nav class="nav">
+          <a class="active" href="#dashboard"><svg class="icon"><use href="#icon-dashboard"></use></svg> Обзор</a>
+          <a href="#databases"><svg class="icon"><use href="#icon-database"></use></svg> Базы данных</a>
+          <a href="#backupsBox"><svg class="icon"><use href="#icon-backup"></use></svg> Backups</a>
+          <a href="#tablesBox"><svg class="icon"><use href="#icon-schema"></use></svg> Схемы</a>
+          <a href="#recordsBox"><svg class="icon"><use href="#icon-records"></use></svg> Записи</a>
+        </nav>
+
+        <div class="session-card">
+          <small>Аккаунт</small>
+          <strong id="userEmail">Гость</strong>
+          <button id="logoutBtn" class="ghost icon-button" type="button">
+            <svg class="icon"><use href="#icon-logout"></use></svg>
+            Выйти
+          </button>
+        </div>
+      </aside>
+
+      <main class="console-main">
+        <header class="console-topbar">
+          <div>
+            <p class="eyebrow">CloudDB / Project</p>
+            <h1>Dashboard</h1>
+          </div>
+
+          <div class="topbar-actions">
+            <div class="search-wrap">
+              <svg class="icon"><use href="#icon-search"></use></svg>
+              <input id="globalSearch" type="search" placeholder="Глобальный поиск">
+              <div id="searchResults" class="search-results hide"></div>
+            </div>
+            <button id="refreshBtn" class="secondary icon-only" type="button" title="Обновить">
+              <svg class="icon"><use href="#icon-refresh"></use></svg>
+            </button>
+          </div>
+        </header>
+
+        <section id="dashboard" class="dashboard-grid">
+          <div class="panel hero-panel">
+            <div>
+              <p class="eyebrow">Live overview</p>
+              <h2>Состояние платформы</h2>
+              <p>Метрики рабочей области, функции и регионы обновляются из CloudDB API.</p>
+            </div>
+            <span class="status-pill">Healthy</span>
+          </div>
+
+          <div class="stats">
+            <div class="stat-tile"><small>Базы</small><b id="statDbs">0</b></div>
+            <div class="stat-tile"><small>Таблицы</small><b id="statTables">0</b></div>
+            <div class="stat-tile"><small>Записи</small><b id="statRecords">0</b></div>
+            <div class="stat-tile"><small>События</small><b id="statEvents">0</b></div>
+            <div class="stat-tile"><small>Хранилище</small><b id="statStorage">0 B</b></div>
+            <div class="stat-tile"><small>Invocations</small><b id="statInvocations">0</b></div>
+            <div class="stat-tile"><small>Backups</small><b id="statBackups">0</b></div>
+          </div>
+
+          <div class="ops-grid">
+            <section class="panel">
+              <div class="panel-title">
+                <svg class="icon"><use href="#icon-activity"></use></svg>
+                <h3>Автомасштабирование</h3>
+              </div>
+              <dl class="metrics">
+                <div><dt>Mode</dt><dd id="scaleMode">scale-to-zero</dd></div>
+                <div><dt>Concurrency</dt><dd id="scaleConcurrency">0</dd></div>
+                <div><dt>p95 latency</dt><dd id="scaleLatency">0 ms</dd></div>
+                <div><dt>Cold start</dt><dd id="scaleColdStart">0 ms</dd></div>
+              </dl>
+            </section>
+
+            <section class="panel">
+              <div class="panel-title">
+                <svg class="icon"><use href="#icon-function"></use></svg>
+                <h3>Функции</h3>
+              </div>
+              <div id="functionList" class="compact-list"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-title">
+                <svg class="icon"><use href="#icon-globe"></use></svg>
+                <h3>Регионы</h3>
+              </div>
+              <div id="regionList" class="compact-list"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-title">
+                <svg class="icon"><use href="#icon-backup"></use></svg>
+                <h3>Backup status</h3>
+              </div>
+              <dl class="metrics">
+                <div><dt>Policy</dt><dd id="backupPolicy">manual snapshots</dd></div>
+                <div><dt>Status</dt><dd id="backupStatus">ready</dd></div>
+                <div><dt>Latest</dt><dd id="backupLatest">-</dd></div>
+                <div><dt>Snapshot size</dt><dd id="backupSize">0 B</dd></div>
+              </dl>
+            </section>
+          </div>
+        </section>
+
+        <section id="databases" class="content-grid">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Tenant layer</p>
+                <h2>Базы данных</h2>
+              </div>
+            </div>
+
+            <form id="dbForm" class="inline-create-form">
+              <input id="dbId" type="hidden">
+              <div>
+                <label>Название базы</label>
+                <input name="name" placeholder="Production CRM" required>
+              </div>
+              <div>
+                <label>Описание</label>
+                <input name="description" placeholder="Команда, домен или назначение">
+              </div>
+              <div class="actions">
+                <button id="dbSaveBtn" class="icon-button" type="submit"><svg class="icon"><use href="#icon-plus"></use></svg> Добавить</button>
+                <button id="dbCancelBtn" class="ghost" type="button">Сбросить</button>
+              </div>
+            </form>
+
+            <div id="dbList" class="resource-grid"></div>
+          </div>
+
+          <aside id="activityPanel" class="panel">
+            <div class="panel-title">
+              <svg class="icon"><use href="#icon-activity"></use></svg>
+              <h3>Последние события</h3>
+            </div>
+            <div id="activityList" class="timeline"></div>
+          </aside>
+        </section>
+
+        <section id="backupsBox" class="content-grid">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Recovery layer</p>
+                <h2>Backups и SQLite snapshots</h2>
+              </div>
+              <span class="status-pill">isolated</span>
+            </div>
+
+            <div class="backup-toolbar">
+              <div>
+                <label>База данных</label>
+                <select id="backupDatabaseSelect"></select>
+              </div>
+              <div>
+                <label>Название backup</label>
+                <input id="backupName" placeholder="Production snapshot">
+              </div>
+              <div class="actions">
+                <button id="createBackupBtn" class="icon-button" type="button"><svg class="icon"><use href="#icon-backup"></use></svg> Create backup</button>
+                <button id="downloadSnapshotBtn" class="secondary icon-button" type="button"><svg class="icon"><use href="#icon-download"></use></svg> Download DB</button>
+              </div>
+            </div>
+
+            <div id="backupList" class="backup-list"></div>
+          </div>
+
+          <aside class="panel">
+            <div class="panel-title">
+              <svg class="icon"><use href="#icon-shield"></use></svg>
+              <h3>Snapshot isolation</h3>
+            </div>
+            <dl class="metrics">
+              <div><dt>Format</dt><dd>SQLite</dd></div>
+              <div><dt>Scope</dt><dd>selected DB</dd></div>
+              <div><dt>Users table</dt><dd>excluded</dd></div>
+              <div><dt>Restore mode</dt><dd>new database</dd></div>
+            </dl>
+          </aside>
+        </section>
+
+        <section id="tablesBox" class="panel hide">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Schema registry</p>
+              <h2>Схемы в базе: <span id="currentDbName"></span></h2>
+            </div>
+          </div>
+
+          <form id="tableForm" class="schema-form">
+            <input id="tableId" type="hidden">
+            <div>
+              <label>Название таблицы</label>
+              <input name="name" placeholder="clients" required>
+            </div>
+            <div>
+              <label>Шаблон</label>
+              <select id="schemaTemplateSelect">
+                <option value="">Своя схема</option>
+              </select>
+            </div>
+            <div class="schema-editor">
+              <label>Колонки JSON</label>
+              <textarea name="columns" rows="9">[
+  {"name": "title", "type": "text", "required": true},
+  {"name": "price", "type": "number"},
+  {"name": "status", "type": "text", "default": "new"}
+]</textarea>
+            </div>
+            <div class="actions">
+              <button id="tableSaveBtn" class="icon-button" type="submit"><svg class="icon"><use href="#icon-plus"></use></svg> Создать таблицу</button>
+              <button id="tableCancelBtn" class="ghost" type="button">Сбросить</button>
+            </div>
+          </form>
+
+          <div id="tableList" class="resource-grid"></div>
+        </section>
+
+        <section id="recordsBox" class="panel hide">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Data plane</p>
+              <h2>Записи таблицы: <span id="currentTableName"></span></h2>
+            </div>
+            <div class="toolbar">
+              <button id="exportBtn" class="secondary icon-button" type="button"><svg class="icon"><use href="#icon-download"></use></svg> JSON</button>
+              <button id="exportCsvBtn" class="secondary icon-button" type="button"><svg class="icon"><use href="#icon-download"></use></svg> CSV</button>
+            </div>
+          </div>
+
+          <div id="columnsInfo" class="columns-info"></div>
+
+          <div class="records-layout">
+            <form id="recordForm" class="stack-form">
+              <input type="hidden" id="recordId">
+              <label>Данные записи JSON</label>
+              <textarea id="recordData" rows="10">{}</textarea>
+              <div class="actions">
+                <button id="recordSaveBtn" class="icon-button" type="submit"><svg class="icon"><use href="#icon-plus"></use></svg> Добавить запись</button>
+                <button type="button" id="recordCancelBtn" class="ghost">Очистить</button>
+              </div>
+            </form>
+
+            <div class="import-panel">
+              <label>Импорт records[]</label>
+              <textarea id="importData" rows="10">[
+  {}
+]</textarea>
+              <button id="importBtn" class="secondary icon-button" type="button"><svg class="icon"><use href="#icon-upload"></use></svg> Импортировать</button>
+            </div>
+          </div>
+
+          <div class="filter-bar">
+            <div class="input-with-icon">
+              <svg class="icon"><use href="#icon-search"></use></svg>
+              <input id="recordFilter" placeholder="Фильтр по данным">
+            </div>
+            <select id="recordSortBy">
+              <option value="id">Сортировка: id</option>
+            </select>
+            <select id="recordSortOrder">
+              <option value="desc">Сначала новые</option>
+              <option value="asc">Сначала старые</option>
+            </select>
+            <button id="filterBtn" class="secondary icon-only" type="button" title="Найти"><svg class="icon"><use href="#icon-search"></use></svg></button>
+          </div>
+
+          <div id="recordList" class="records-list"></div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="confirmDialog" class="confirm-dialog">
+      <div class="confirm-card">
+        <p class="eyebrow">CloudDB action</p>
+        <h2 id="confirmTitle">Подтверждение</h2>
+        <p id="confirmText"></p>
+        <div class="confirm-actions">
+          <button id="confirmCancelBtn" class="ghost" type="button">Отмена</button>
+          <button id="confirmOkBtn" class="danger icon-button" type="button"><svg class="icon"><use href="#icon-trash"></use></svg> Удалить</button>
+        </div>
+      </div>
+    </dialog>
+
+    <script src="{{ url_for('static', filename='app.js') }}?v=20260510-buttons"></script>
+  </body>
+</html>

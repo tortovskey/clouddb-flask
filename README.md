@@ -1,47 +1,44 @@
 # CloudDB
 
-CloudDB - учебная облачная информационная система на Flask с serverless-консолью для виртуальных баз данных, схем, записей, аудита, экспорта, SQLite snapshots и backup/restore.
+A Flask database management demo with a serverless-style console for virtual
+databases, schemas, records, audit logs, exports, SQLite snapshots, and backups.
 
-## Возможности
+## Features
 
-- регистрация и вход пользователей;
-- изолированные рабочие пространства: пользователь видит только свои базы, таблицы, записи и backups;
-- создание виртуальных баз данных и таблиц с JSON-схемами;
-- типы колонок: `text`, `number`, `boolean`, `date`, `json`;
-- добавление, редактирование, удаление, фильтрация и сортировка записей;
-- предсказуемая сортировка по типу колонки, включая числовую сортировку;
-- глобальный поиск по базам, таблицам и записям;
-- импорт массива записей через JSON;
-- экспорт таблиц в JSON и CSV;
-- скачивание выбранной виртуальной базы как SQLite snapshot;
-- создание backup, скачивание backup в SQLite и восстановление backup в новую базу с суффиксом `Restored`;
-- dashboard с метриками autoscaling, regions, function invocations, storage usage, backup status и audit log.
+- User registration and sign-in.
+- Isolated workspaces: users access only their own databases, tables, records, and backups.
+- Virtual databases and tables defined with JSON schemas.
+- Column types: `text`, `number`, `boolean`, `date`, and `json`.
+- Record creation, editing, deletion, filtering, and sorting.
+- Type-aware sorting, including correct numeric ordering.
+- Global search across databases, tables, and records.
+- JSON array imports and table exports in JSON or CSV.
+- Isolated SQLite snapshots of selected virtual databases.
+- Backup creation, SQLite downloads, and restoration into a new database.
+- A dashboard showing autoscaling, regions, function invocations, storage usage, backup status, and audit events.
 
-## SQLite Snapshots
+## SQLite snapshots
 
-Кнопка `Download DB` скачивает не сырой файл `database.db`, а отдельный изолированный SQLite snapshot выбранной виртуальной базы.
+The `Download DB` button creates an isolated SQLite snapshot of the selected
+virtual database. The application's raw `database.db` file is not exposed through
+the interface.
 
-Snapshot содержит таблицы:
+Each snapshot contains these tables:
 
-- `snapshot_meta`;
-- `tables`;
-- `records`;
-- `activity_events`.
+- `snapshot_meta`
+- `tables`
+- `records`
+- `activity_events`
 
-В snapshot не попадают `users`, `password_hash` и данные других пользователей. Raw `database.db` не скачивается из UI по соображениям изоляции пользователей.
+Snapshots exclude `users`, `password_hash`, and other users' data.
 
-## Backup / Restore
+## Backup and restore
 
-В разделе `Backups` можно:
+Use the `Backups` section to select a database, create a backup, download it as a
+`.sqlite` file, or restore it into a new CloudDB database with a `Restored` suffix.
+Restoring a backup preserves existing databases and records.
 
-- выбрать базу данных;
-- создать backup;
-- скачать backup как `.sqlite`;
-- восстановить backup в новую CloudDB-базу.
-
-Restore не перезаписывает существующие базы и записи.
-
-## Запуск
+## Quick start
 
 ```powershell
 python -m venv .venv
@@ -50,25 +47,23 @@ python -m pip install -r requirements.txt
 python app.py
 ```
 
-Открыть в браузере:
+Open `http://127.0.0.1:5000` in your browser.
 
-```text
-http://127.0.0.1:5000
-```
-
-Если порт `5000` занят, можно запустить Flask на другом порту:
+If port `5000` is occupied, choose another port:
 
 ```powershell
 python -m flask --app app run --host 127.0.0.1 --port 5001
 ```
 
-SQLite-файл приложения создается автоматически как `database.db`.
+The application creates its SQLite database as `database.db` automatically.
 
-## Конфигурация
+## Configuration
 
-Для production-подобного запуска задайте `SECRET_KEY` через переменную окружения. Пример находится в `.env.example`. Локальный `database.db`, логи и runtime-файлы намеренно исключены из Git.
+Set `SECRET_KEY` through an environment variable for a production-like deployment.
+See `.env.example` for the available configuration. Local databases, logs, and
+runtime files are excluded from Git.
 
-Для HTTPS-развёртывания также задайте:
+For an HTTPS deployment, also set:
 
 ```text
 SESSION_COOKIE_SECURE=True

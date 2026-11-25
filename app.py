@@ -752,7 +752,7 @@ def databases():
                 COUNT(r.id) AS record_count
             FROM databases d
             LEFT JOIN tables t ON t.database_id = d.id AND t.user_id = d.user_id
-            LEFT JOIN records r ON r.database_id = d.id AND r.user_id = d.user_id
+            LEFT JOIN records r ON r.table_id = t.id AND r.user_id = t.user_id
             WHERE d.user_id = ?
             GROUP BY d.id
             ORDER BY d.id DESC
